@@ -42,6 +42,11 @@
   @media (max-width: 520px) { .wordmark img { height: 2.5rem; } }
   .header-link { font-weight: 600; font-size: .95rem; text-decoration: none; color: var(--root); border-bottom: 2px solid transparent; }
   .header-link:hover { border-bottom-color: var(--root); }
+  .header-links { display: flex; align-items: center; gap: 1.5rem; }
+  .header-links .header-link { white-space: nowrap; }
+  @media (max-width: 480px) { .header-links { gap: .9rem; } .header-links .header-link { font-size: .85rem; } }
+  .signin-note { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); }
+  .signin-note a { color: var(--root); font-weight: 600; }
 
   h1, h2 { font-family: "Newsreader", Georgia, serif; font-weight: 400; color: var(--ink); margin: 0; }
   h1 { font-size: clamp(2.5rem, 5.5vw, 4.25rem); line-height: 1.04; letter-spacing: -.015em; max-width: 13ch; }
@@ -109,7 +114,10 @@
 <header class="site">
   <div class="wrap">
     <a class="wordmark" href="./"><img src="rhizvera-logo.png" alt="Rhizvera: Where Data Becomes Truth" width="720" height="171"></a>
-    <a class="header-link" href="#request">Request access</a>
+    <nav class="header-links" aria-label="Account">
+      <a class="header-link" href="https://learn.rhizvera.com/login">Sign in</a>
+      <a class="header-link" href="#request">Request access</a>
+    </nav>
   </div>
 </header>
 
@@ -121,6 +129,7 @@
         <p class="lede">Workers' compensation risk, managed with precision across the staffing industry.</p>
         <p class="sub">The Rhizvera Staffing Risk Intelligence (SRI) Platform brings classification, payroll exposure, claims and workforce communication together for staffing companies and the carriers, captives and programs that insure them.</p>
         <a class="button" href="#request">Request access</a>
+        <p class="signin-note">Already approved? <a href="https://learn.rhizvera.com/login">Sign in</a></p>
       </div>
 
       <svg class="rhizome" viewBox="0 0 520 420" role="img" aria-labelledby="rz-title">
