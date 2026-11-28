@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "slug": "the-policy-is-underwritten-once-the-book-is-underwritten-every-day",
+    "title": "The Policy Is Underwritten Once. The Book Is Underwritten Every Day.",
+    "sub": "Why classification drifts in staffing programs, and what a carrier or program can require to keep daily placements in line with underwriting intent",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 2
+  },
+  {
+    "slug": "the-job-order-nobody-underwrote",
+    "title": "The Job Order Nobody Underwrote",
+    "sub": "How the handoff between sales, account management and recruiting creates workers\u2019 compensation risk, and how to close the gap",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 3
+  },
+  {
+    "slug": "when-a-declined-jobsite-finds-another-staffing-company",
+    "title": "When a Declined Jobsite Finds Another Staffing Company",
+    "sub": "Why unsafe host employers move from one staffing provider to the next, and how to recognize one before you sign",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 4
+  },
+  {
+    "slug": "the-final-audit-should-confirm-not-discover",
+    "title": "The Final Audit Should Confirm, Not Discover",
+    "sub": "Why premium audits keep surprising staffing companies and their programs, and how monthly discipline changes the result",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 5
+  },
+  {
+    "slug": "the-first-hour-after-an-injury",
+    "title": "The First Hour After an Injury",
+    "sub": "The claims procedures a staffing company controls, and why they matter even though the adjuster handles the claim",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 6
+  },
+  {
+    "slug": "who-holds-your-staffing-companys-risk-history",
+    "title": "Who Holds Your Staffing Company\u2019s Risk History?",
+    "sub": "The records a staffing company should keep in its own hands, and why they matter when it changes carriers, programs, agents or service providers",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 7
+  },
+  {
+    "slug": "everyone-needs-part-of-the-file",
+    "title": "Everyone Needs Part of the File",
+    "sub": "How staffing companies and their programs can share information with agents, insurers, funders and auditors without losing control of it",
+    "date": "2026-11-28",
+    "cover": "cover.jpg",
+    "rank": 8
+  }
+]

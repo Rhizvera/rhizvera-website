@@ -3,7 +3,8 @@
 Only published posts are built. Article text comes from each article's Word file;
 nothing unpublished is written to this repository.
 
-  Publish a post:  python scripts/build_blog.py add <article.docx> <cover image> <YYYY-MM-DD>
+  Publish a post:  python scripts/build_blog.py add <article.docx> <cover image> <YYYY-MM-DD> [rank]
+                   (rank orders posts that share a date; lower comes first)
   Rebuild index:   python scripts/build_blog.py index
   Preview (no repo changes): python scripts/build_blog.py preview <outdir> <docx>... (covers optional: docx=image)
 """
@@ -234,8 +235,21 @@ def index_page(posts, prefix=""):
 </div>"""
     return page("Blog | Rhizvera Insights", "Practical articles on workers' compensation for temporary staffing from Rhizvera.", body, f"{SITE}/blog/")
 
+def trim_flat_sides(im, tol=4, min_band=24):
+    """Cut a flat, empty band off either side (image generators sometimes leave one)."""
+    from PIL import ImageStat
+    g = im.convert("L"); w, h = g.size
+    flat = lambda x: ImageStat.Stat(g.crop((x, 0, x + 1, h))).stddev[0] < tol
+    r = w
+    while r > w // 2 and flat(r - 1): r -= 1
+    l = 0
+    while l < w // 2 and flat(l): l += 1
+    l = l if l >= min_band else 0
+    r = r if w - r >= min_band else w
+    return im.crop((l, 0, r, h)) if (l or r != w) else im
+
 def save_cover(src, dest):
-    im = Image.open(src).convert("RGB")
+    im = trim_flat_sides(Image.open(src).convert("RGB"))
     w, h = im.size; target = 16 / 9
     if w / h > target: nw = int(h * target); im = im.crop(((w - nw) // 2, 0, (w - nw) // 2 + nw, h))
     elif w / h < target: nh = int(w / target); im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
@@ -246,18 +260,21 @@ def load():
     return json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else []
 
 def write_index(posts):
+    posts = sorted(posts, key=lambda p: p.get("rank", 99))
     posts = sorted(posts, key=lambda p: p["date"], reverse=True)
     open(os.path.join(BLOG, "index.html"), "w", encoding="utf-8").write(index_page(posts))
     json.dump(posts, open(MANIFEST, "w"), indent=2)
 
-def add(docx_path, cover, date):
+def add(docx_path, cover, date, rank=None):
     datetime.date.fromisoformat(date)
     a = read_article(docx_path); slug = slugify(a["title"])
     d = os.path.join(BLOG, slug); os.makedirs(d, exist_ok=True)
     save_cover(cover, os.path.join(d, "cover.jpg"))
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(article_page(a, slug, date, "cover.jpg"))
     posts = [p for p in load() if p["slug"] != slug]
-    posts.append(dict(slug=slug, title=a["title"], sub=a["sub"], date=date, cover="cover.jpg"))
+    entry = dict(slug=slug, title=a["title"], sub=a["sub"], date=date, cover="cover.jpg")
+    if rank is not None: entry["rank"] = int(rank)
+    posts.append(entry)
     write_index(posts); print("published", slug)
 
 def preview(outdir, items):
@@ -275,7 +292,7 @@ def preview(outdir, items):
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    if cmd == "add" and len(sys.argv) == 5: add(*sys.argv[2:5])
+    if cmd == "add" and len(sys.argv) in (5, 6): add(*sys.argv[2:])
     elif cmd == "index": os.makedirs(BLOG, exist_ok=True); write_index(load())
     elif cmd == "preview": preview(sys.argv[2], sys.argv[3:])
     else: print(__doc__)
