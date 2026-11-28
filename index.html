@@ -38,7 +38,7 @@
   .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
 
   header.site { padding: 1.5rem 0; }
-  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   .wordmark { font: 500 1.5rem/1 "Newsreader", Georgia, serif; color: var(--ink); text-decoration: none; letter-spacing: .01em; }
   .wordmark img { height: 4rem; width: auto; display: block; }
   @media (max-width: 520px) { .wordmark img { height: 2.5rem; } }
@@ -116,7 +116,8 @@
 <header class="site">
   <div class="wrap">
     <a class="wordmark" href="./"><img src="rhizvera-logo.png" alt="Rhizvera: Where Data Becomes Truth" width="720" height="171"></a>
-    <nav class="header-links" aria-label="Account">
+    <nav class="header-links" aria-label="Site">
+      <a class="header-link" href="blog/">Blog</a>
       <a class="header-link" href="https://learn.rhizvera.com/login">Sign in</a>
       <a class="header-link" href="#request">Request access</a>
     </nav>
@@ -218,7 +219,7 @@
 <footer class="site">
   <div class="wrap">
     <span>© 2026 Rhizvera, Inc.</span>
-    <span>Staffing Risk Intelligence · <a href="privacy.html">Privacy</a></span>
+    <span>Staffing Risk Intelligence · <a href="blog/">Blog</a> · <a href="privacy.html">Privacy</a></span>
   </div>
 </footer>
 
