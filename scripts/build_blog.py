@@ -85,7 +85,9 @@ def page(title, desc, body, canonical, og_image=None, og_type="website", extra_h
           f'<meta property="og:url" content="{canonical}">',
           '<meta property="og:site_name" content="Rhizvera">']
     if og_image:
-        og += [f'<meta property="og:image" content="{og_image}">', '<meta name="twitter:card" content="summary_large_image">']
+        og += [f'<meta property="og:image" content="{og_image}">', '<meta property="og:image:width" content="1200">',
+               '<meta property="og:image:height" content="627">', f'<meta property="og:image:alt" content="{html.escape(title)}">',
+               '<meta name="twitter:card" content="summary_large_image">']
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -212,7 +214,7 @@ def article_page(a, slug, date, cover_name):
                      "publisher": {"@type": "Organization", "name": "Rhizvera, Inc."},
                      **({"image": url + cover_name} if cover_name else {})})
     return page(f"{a['title']} | Rhizvera Insights", a["sub"], body, url,
-                og_image=(url + cover_name) if cover_name else None, og_type="article",
+                og_image=(url + "social.jpg") if cover_name else None, og_type="article",
                 extra_head=f'<script type="application/ld+json">{ld}</script>\n')
 
 def index_page(posts, prefix=""):
@@ -256,6 +258,14 @@ def save_cover(src, dest):
     im = im.resize((1600, 900), Image.LANCZOS)
     im.save(dest, "JPEG", quality=85, optimize=True, progressive=True)
 
+def save_social(src, dest):
+    """LinkedIn link previews are 1.91:1 (1200 x 627); other shapes get padded."""
+    im = trim_flat_sides(Image.open(src).convert("RGB"))
+    w, h = im.size; target = 1200 / 627
+    if w / h > target: nw = int(h * target); im = im.crop(((w - nw) // 2, 0, (w - nw) // 2 + nw, h))
+    else: nh = int(w / target); im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
+    im.resize((1200, 627), Image.LANCZOS).save(dest, "JPEG", quality=85, optimize=True, progressive=True)
+
 def load():
     return json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else []
 
@@ -270,6 +280,7 @@ def add(docx_path, cover, date, rank=None):
     a = read_article(docx_path); slug = slugify(a["title"])
     d = os.path.join(BLOG, slug); os.makedirs(d, exist_ok=True)
     save_cover(cover, os.path.join(d, "cover.jpg"))
+    save_social(cover, os.path.join(d, "social.jpg"))
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(article_page(a, slug, date, "cover.jpg"))
     posts = [p for p in load() if p["slug"] != slug]
     entry = dict(slug=slug, title=a["title"], sub=a["sub"], date=date, cover="cover.jpg")
